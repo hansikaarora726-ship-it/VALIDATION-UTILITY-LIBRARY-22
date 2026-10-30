@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation Utility Library</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            padding: 30px;
+        }
+
+        .container {
+            background: white;
+            max-width: 450px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #34495e;
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #6489c7;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Form Validation</h1>
+
+    <form id="myForm">
+        <input type="text" id="name" placeholder="Enter your name">
+
+        <input type="number" id="age" placeholder="Enter your age">
+
+        <input type="email" id="email" placeholder="Enter your email">
+
+        <input type="password" id="password" placeholder="Enter password">
+
+        <button type="submit">Validate Details</button>
+    </form>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+// Check empty values
+function isRequired(value) {
+    if (!value.trim()) return false;
+    return true;
+}
+
+// Validate age
+function isValidAge(age) {
+    if (age === "" || age === null) return false;
+
+    let number = Number(age);
+
+    if (!Number.isInteger(number)) return false;
+    if (number < 18 || number > 100) return false;
+
+    return true;
+}
+
+// Validate email
+function isValidEmail(email) {
+    if (!email) return false;
+
+    let pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!pattern.test(email)) return false;
+
+    return true;
+}
+
+// Validate password
+function isValidPassword(password) {
+    if (!password) return false;
+    if (password.length < 8) return false;
+
+    return true;
+}
+
+// Form validation
+document.getElementById("myForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    let name = document.getElementById("name").value;
+    let age = document.getElementById("age").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    let errors = [];
+
+    if (!isRequired(name)) {
+        errors.push("Name is required.");
+    }
+
+    if (!isValidAge(age)) {
+        errors.push("Age must be between 18 and 100.");
+    }
+
+    if (!isValidEmail(email)) {
+        errors.push("Enter a valid email address.");
+    }
+
+    if (!isValidPassword(password)) {
+        errors.push("Password must contain at least 8 characters.");
+    }
+
+    let result = document.getElementById("result");
+
+    if (errors.length > 0) {
+        result.innerHTML = "<h3>Please fix these errors:</h3>" +
+            errors.join("<br>");
+        result.style.color = "red";
+    } else {
+        result.innerHTML = "<h3>All details are valid!</h3>";
+        result.style.color = "green";
+    }
+});
+
+</script>
+
+</body>
+</html>
